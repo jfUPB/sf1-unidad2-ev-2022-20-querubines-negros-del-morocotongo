@@ -64,6 +64,60 @@ public class ControladorApp : MonoBehaviour
         _serialPort.Write("readBUTTONS\n");
         Debug.Log("Send readBUTTONS");
     }
+    
+    public void btnState(){
+        string response = _serialPort.ReadLine();
+        if (response == "btn1: ON btn2: ON btn3: ON")
+        {
+            estadoBtn1.text = "1: Pressed";
+            estadoBtn2.text = "2: Pressed";
+            estadoBtn3.text = "3: Pressed";
+        }
+        if (response == "btn1: ON btn2: ON btn3: OFF")
+        {
+            estadoBtn1.text = "1: Pressed";
+            estadoBtn2.text = "2: Pressed";
+            estadoBtn3.text = "3: Released";
+        }
+        if (response == "btn1: ON btn2: OFF btn3: ON")
+        {
+            estadoBtn1.text = "1: Pressed";
+            estadoBtn2.text = "2: Released";
+            estadoBtn3.text = "3: Pressed";
+        }
+        if (response == "btn1: OFF btn2: ON btn3: ON")
+        {
+            estadoBtn1.text = "1: Released";
+            estadoBtn2.text = "2: Pressed";
+            estadoBtn3.text = "3: Pressed";
+        }
+        if (response == "btn1: OFF btn2: OFF btn3: ON")
+        {
+            estadoBtn1.text = "1: Released";
+            estadoBtn2.text = "2: Released";
+            estadoBtn3.text = "3: Pressed";
+        }
+        if (response == "btn1: ON btn2: OFF btn3: OFF")
+        {
+            estadoBtn1.text = "1: Pressed";
+            estadoBtn2.text = "2: Released";
+            estadoBtn3.text = "3: Released";
+        }
+        if (response == "btn1: OFF btn2: ON btn3: OFF")
+        {
+            estadoBtn1.text = "1: Released";
+            estadoBtn2.text = "2: Pressed";
+            estadoBtn3.text = "3: Released";
+        }
+        if (response == "btn1: OFF btn2: OFF btn3: OFF")
+        {
+            estadoBtn1.text = "1: Released";
+            estadoBtn2.text = "2: Released";
+            estadoBtn3.text = "3: Released";
+        }
+        Debug.Log(response);
+    }
+        
     void Start()
     {
         _serialPort = new SerialPort();
@@ -97,20 +151,7 @@ public class ControladorApp : MonoBehaviour
                 }
                 if (_serialPort.BytesToRead > 0)
                 {
-                    string response = _serialPort.ReadLine();
-                    if (response=="btn1: OFF"||response=="btn1: ON")
-                    {
-                        estadoBtn1.text=response;
-                    }
-                    if (response=="btn2: OFF"||response=="btn2: ON")
-                    {
-                        estadoBtn2.text=response;
-                    }
-                    if (response=="btn3: OFF"||response=="btn3: ON")
-                    {
-                        estadoBtn3.text=response;
-                    }
-                    Debug.Log(response);
+                    btnState();
                 }
 
                 break;
