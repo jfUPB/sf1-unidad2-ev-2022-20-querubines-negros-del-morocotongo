@@ -13,50 +13,47 @@ public class ControladorApp : MonoBehaviour
 {
     private static TaskState taskState = TaskState.INIT;
     private SerialPort _serialPort;
-    private byte[] buffer;
-    public TextMeshProUGUI leds;
-    public TextMeshProUGUI estadoLeds;
     public TextMeshProUGUI estadoBtn1;
     public TextMeshProUGUI estadoBtn2;
     public TextMeshProUGUI estadoBtn3;
     public Button btnLed;
     public Button btnReadBtn;
-    public int led=0;
+    public TMP_Dropdown nLed;
+    public TMP_Dropdown eLed;
 
     public void btnledcont()
     {
-        if (led == 0)
+            // leer el estado del dropdown del selector de LED
+                // Enviar mensaje con el numero de lED
+        if (nLed.value==0)
         {
             _serialPort.Write("led1\n");
             Debug.Log("Send led1");
-            leds.text = "1";
-            estadoLeds.text = "ON";
-            led = 1;
         }
-        else if (led == 1)
+        if (nLed.value==1)
         {
             _serialPort.Write("led2\n");
             Debug.Log("Send led2");
-            leds.text = "2";
-            estadoLeds.text = "ON";
-            led = 2;
         }
-        else if (led == 2)
+        if (nLed.value==2)
         {
             _serialPort.Write("led3\n");
             Debug.Log("Send led3");
-            leds.text = "3";
-            estadoLeds.text = "ON";
-            led = 3;
         }
-        else if (led == 3)
+        
+            //Leer el estado del dropdown para enviar si es ON o es OFF
+              // Envia el segundo mensaje
+        if (eLed.value==0)
         {
-            _serialPort.Write("led1\n");
-            Debug.Log("Send led1");
-            leds.text = "1";
-            estadoLeds.text = "ON";
-            led = 1;
+            _serialPort.Write("ON\n");
+            Debug.Log("Send ON");
         }
+        if (eLed.value==1)
+        {
+            _serialPort.Write("OFF\n");
+            Debug.Log("Send OFF");
+        } 
+        
     }
 
     public void btnBtRead()
@@ -117,7 +114,7 @@ public class ControladorApp : MonoBehaviour
         }
         Debug.Log(response);
     }
-        
+    
     void Start()
     {
         _serialPort = new SerialPort();
@@ -127,7 +124,6 @@ public class ControladorApp : MonoBehaviour
         _serialPort.NewLine = "\n";
         _serialPort.Open();
         Debug.Log("Open Serial Port");
-        buffer = new byte[128];
     }
 
     void Update()
@@ -144,7 +140,6 @@ public class ControladorApp : MonoBehaviour
                 {
                     btnledcont();
                 }
-                
                 if (btnReadBtn == null)
                 {
                     btnBtRead();

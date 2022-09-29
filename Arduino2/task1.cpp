@@ -28,6 +28,8 @@ void task1()
     constexpr uint8_t button2Pin = 12;
     constexpr uint8_t button3Pin = 33;
 
+    static int led = 0;
+
     switch (taskState)
     {
     case TaskState::INIT:
@@ -39,6 +41,9 @@ void task1()
         pinMode(button1Pin, INPUT_PULLUP);
         pinMode(button2Pin, INPUT_PULLUP);
         pinMode(button3Pin, INPUT_PULLUP);
+        digitalWrite(led1, HIGH);
+        digitalWrite(led2, HIGH);
+        digitalWrite(led3, HIGH);
         taskState = TaskState::WAIT_COMMANDS;
         break;
     }
@@ -47,33 +52,37 @@ void task1()
         if (Serial.available() > 0)
         {
             String command = Serial.readStringUntil('\n');
+            
             if (command == "led1")
             {
-                digitalWrite(led1, HIGH);
-                digitalWrite(led2, LOW);
-                digitalWrite(led3, LOW);
+                //printf("Test led1 \n");
+                led = led1;
             }
             else if (command == "led2")
             {
-                digitalWrite(led1, LOW);
-                digitalWrite(led2, HIGH);
-                digitalWrite(led3, LOW);
+                led = led2;
             }
             else if (command == "led3")
             {
-                digitalWrite(led1, LOW);
-                digitalWrite(led2, LOW);
-                digitalWrite(led3, HIGH);
+                led = led3;
+            }
+
+            if (command == "ON")
+            {
+                digitalWrite(led, HIGH);
+            }
+            else if (command == "OFF")
+            {
+                digitalWrite(led, LOW);
+                //printf("Test led1 OFF \n");
             }
             else if (command == "readBUTTONS")
             {
 
                 Serial.print("btn1: ");
                 Serial.print(btnState(digitalRead(button1Pin)).c_str());
-                Serial.print("\n");
                 Serial.print(" btn2: ");
                 Serial.print(btnState(digitalRead(button2Pin)).c_str());
-                Serial.print("\n");
                 Serial.print(" btn3: ");
                 Serial.print(btnState(digitalRead(button3Pin)).c_str());
                 Serial.print('\n');
